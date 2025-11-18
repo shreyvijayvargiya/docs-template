@@ -15,12 +15,12 @@ function MDXContentInner({ children, currentRoute, section, baseRoute }) {
 
 	return (
 		<div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
-			<div className="p-10 w-1/2 mx-auto flex gap-12 justify-center">
+			<div className="p-10 flex justify-center">
 				{/* Spacer for centering when TOC is visible */}
 				<div className="hidden xl:block w-64 flex-shrink-0" />
 
-				{/* Main Content - Centered */}
-				<main className="">
+				{/* Main Content - Fixed Width */}
+				<main className="w-[800px] flex-shrink-0">
 					<br />
 					<div className="flex justify-end">
 						<CopyPageButton contentRef={contentRef} />
@@ -35,7 +35,7 @@ function MDXContentInner({ children, currentRoute, section, baseRoute }) {
 				</main>
 
 				{/* Table of Contents - Right Side */}
-				<aside className="xl:block w-fit flex-shrink-0">
+				<aside className="hidden xl:block w-fit flex-shrink-0 ml-8">
 					<TableOfContents headings={headings} key={currentRoute} />
 				</aside>
 			</div>
