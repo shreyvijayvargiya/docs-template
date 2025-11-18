@@ -127,7 +127,7 @@ const Sidebar = () => {
 			heading: "Bootup",
 			items: [
 				{ name: "Introduction", hasDropdown: false },
-				{ name: "Migrate to Polar", hasDropdown: false },
+				{ name: "Migrate to Docs", hasDropdown: false },
 			],
 		},
 		{
