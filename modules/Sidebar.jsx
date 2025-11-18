@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import {
 	Search,
 	ChevronDown,
@@ -22,15 +23,25 @@ import {
 	Sparkles,
 } from "lucide-react";
 import { useTheme } from "../lib/theme-provider";
+import { useSidebar } from "../lib/sidebar-provider";
 
 const Sidebar = () => {
 	const { theme, toggleTheme } = useTheme();
+	const { isOpen, closeSidebar } = useSidebar();
 	const pathname = usePathname();
 	const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 	const [openSections, setOpenSections] = useState({
 		usageBasedBilling: false,
 		ingestionStrategies: false,
 	});
+
+	// Close sidebar when route changes on mobile
+	useEffect(() => {
+		if (isOpen) {
+			closeSidebar();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pathname]);
 
 	const navbarTabs = [
 		{ id: "Docs", label: "Docs", icon: BookOpen, path: "/" },
@@ -256,175 +267,207 @@ const Sidebar = () => {
 		{ name: "Dashboard", icon: LayoutDashboard, hasExternal: true },
 	];
 
-	return (
-		<>
-			<div className="fixed left-0 top-0 w-64 h-screen bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 flex flex-col z-50">
-				{/* Header */}
-				<div className="p-4 border-b border-zinc-200 dark:border-zinc-800">
-					{/* Logo */}
-					<div className="flex items-center justify-between">
-						<div className="w-4 h-4 bg-zinc-900 dark:bg-zinc-800 rounded-full flex items-center justify-center">
-							<div className="w-2 h-2 bg-white dark:bg-zinc-100 rounded-full opacity-80"></div>
-						</div>
-						<button
-							onClick={toggleTheme}
-							className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
-							title={
-								theme === "dark"
-									? "Switch to light mode"
-									: "Switch to dark mode"
-							}
-						>
-							{theme === "dark" ? (
-								<Sun className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
-							) : (
-								<Moon className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
-							)}
-						</button>
+	const sidebarContent = (
+		<div className="w-64 h-screen bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 flex flex-col">
+			{/* Header */}
+			<div className="p-4 border-b border-zinc-200 dark:border-zinc-800">
+				{/* Logo */}
+				<div className="flex items-center justify-between">
+					<div className="w-4 h-4 bg-zinc-900 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+						<div className="w-2 h-2 bg-white dark:bg-zinc-100 rounded-full opacity-80"></div>
 					</div>
-
-					{/* Search Bar */}
-					<div className="relative">
-						<Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
-						<input
-							type="text"
-							placeholder="Search..."
-							onClick={() => setIsSearchModalOpen(true)}
-							onFocus={() => setIsSearchModalOpen(true)}
-							className="w-full pl-8 pr-12 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:border-transparent text-xs cursor-pointer"
-						/>
-						<kbd className="absolute right-2.5 top-1/2 transform -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded">
-							⌘K
-						</kbd>
-					</div>
+					<button
+						onClick={toggleTheme}
+						className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
+						title={
+							theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+						}
+					>
+						{theme === "dark" ? (
+							<Sun className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+						) : (
+							<Moon className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+						)}
+					</button>
 				</div>
 
-				{/* Navigation */}
-				<div className="flex-1 overflow-y-auto">
-					{navigationData.map((section, sectionIndex) => (
-						<div key={sectionIndex} className="px-3 py-1.5">
-							{section.heading && (
-								<h3 className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
-									{section.heading}
-								</h3>
-							)}
-							<ul className="space-y-0.5">
-								{section.items.map((item, itemIndex) => {
-									const isOpen = item.key ? openSections[item.key] : false;
-									const routePath = getRoutePath(section.heading, item.name);
-									const isActive = pathname === routePath;
+				{/* Search Bar */}
+				<div className="relative">
+					<Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
+					<input
+						type="text"
+						placeholder="Search..."
+						onClick={() => setIsSearchModalOpen(true)}
+						onFocus={() => setIsSearchModalOpen(true)}
+						className="w-full pl-8 pr-12 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:border-transparent text-xs cursor-pointer"
+					/>
+					<kbd className="absolute right-2.5 top-1/2 transform -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded">
+						⌘K
+					</kbd>
+				</div>
+			</div>
 
-									// Check if any sub-item is active
-									const hasActiveSubItem =
-										item.hasDropdown && item.subItems
-											? item.subItems.some((subItem) => {
-													const subRoutePath = getRoutePath(
-														section.heading,
-														subItem,
-														item.name
-													);
-													return pathname === subRoutePath;
-											  })
-											: false;
+			{/* Navigation */}
+			<div className="flex-1 overflow-y-auto">
+				{navigationData.map((section, sectionIndex) => (
+					<div key={sectionIndex} className="px-3 py-1.5">
+						{section.heading && (
+							<h3 className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+								{section.heading}
+							</h3>
+						)}
+						<ul className="space-y-0.5">
+							{section.items.map((item, itemIndex) => {
+								const isOpen = item.key ? openSections[item.key] : false;
+								const routePath = getRoutePath(section.heading, item.name);
+								const isActive = pathname === routePath;
 
-									return (
-										<li key={itemIndex}>
-											{item.hasDropdown && item.subItems ? (
-												<>
-													<button
-														onClick={() => toggleSection(item.key)}
-														className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-xl transition-colors ${
-															hasActiveSubItem
-																? "text-zinc-900 dark:text-zinc-100 font-bold"
-																: "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-														}`}
-													>
-														<span>{item.name}</span>
-														{isOpen ? (
-															<ChevronDown className="w-3.5 h-3.5" />
-														) : (
-															<ChevronRight className="w-3.5 h-3.5" />
-														)}
-													</button>
-													{isOpen && (
-														<ul className="ml-3 mt-0.5 space-y-0.5">
-															{item.subItems.map((subItem, subIndex) => {
-																const subRoutePath = getRoutePath(
-																	section.heading,
-																	subItem,
-																	item.name
-																);
-																const isSubActive = pathname === subRoutePath;
-																return (
-																	<li key={subIndex}>
-																		<Link
-																			href={subRoutePath}
-																			className={`w-full block text-left px-2.5 py-1 text-xs rounded-xl transition-colors ${
-																				isSubActive
-																					? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold"
-																					: "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-																			}`}
-																		>
-																			{subItem}
-																		</Link>
-																	</li>
-																);
-															})}
-														</ul>
-													)}
-												</>
-											) : (
-												<Link
-													href={routePath}
+								// Check if any sub-item is active
+								const hasActiveSubItem =
+									item.hasDropdown && item.subItems
+										? item.subItems.some((subItem) => {
+												const subRoutePath = getRoutePath(
+													section.heading,
+													subItem,
+													item.name
+												);
+												return pathname === subRoutePath;
+										  })
+										: false;
+
+								return (
+									<li key={itemIndex}>
+										{item.hasDropdown && item.subItems ? (
+											<>
+												<button
+													onClick={() => toggleSection(item.key)}
 													className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-xl transition-colors ${
-														isActive
-															? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-semibold"
+														hasActiveSubItem
+															? "text-zinc-900 dark:text-zinc-100 font-bold"
 															: "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
 													}`}
 												>
 													<span>{item.name}</span>
-													<div className="flex items-center gap-0.5">
-														{item.badge && (
-															<span className="text-[10px] px-1 py-0.5 bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-400 rounded">
-																{item.badge}
-															</span>
-														)}
-														{item.hasArrow && (
-															<ChevronRight className="w-3.5 h-3.5" />
-														)}
-													</div>
-												</Link>
-											)}
-										</li>
-									);
-								})}
-							</ul>
-						</div>
-					))}
-				</div>
-
-				{/* Bottom Section */}
-				<div className="border-t border-zinc-200 dark:border-zinc-800 p-3 space-y-1.5">
-					{bottomLinks.map((link, index) => {
-						const Icon = link.icon;
-						return (
-							<a
-								key={index}
-								href="#"
-								className="flex items-center justify-between px-2.5 py-1.5 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors group"
-							>
-								<div className="flex items-center gap-1.5">
-									<Icon className="w-3.5 h-3.5" />
-									<span>{link.name}</span>
-								</div>
-								{link.hasExternal && (
-									<ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-zinc-600 dark:text-zinc-400" />
-								)}
-							</a>
-						);
-					})}
-				</div>
+													{isOpen ? (
+														<ChevronDown className="w-3.5 h-3.5" />
+													) : (
+														<ChevronRight className="w-3.5 h-3.5" />
+													)}
+												</button>
+												{isOpen && (
+													<ul className="ml-3 mt-0.5 space-y-0.5">
+														{item.subItems.map((subItem, subIndex) => {
+															const subRoutePath = getRoutePath(
+																section.heading,
+																subItem,
+																item.name
+															);
+															const isSubActive = pathname === subRoutePath;
+															return (
+																<li key={subIndex}>
+																	<Link
+																		href={subRoutePath}
+																		className={`w-full block text-left px-2.5 py-1 text-xs rounded-xl transition-colors ${
+																			isSubActive
+																				? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold"
+																				: "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+																		}`}
+																	>
+																		{subItem}
+																	</Link>
+																</li>
+															);
+														})}
+													</ul>
+												)}
+											</>
+										) : (
+											<Link
+												href={routePath}
+												className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-xl transition-colors ${
+													isActive
+														? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-semibold"
+														: "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+												}`}
+											>
+												<span>{item.name}</span>
+												<div className="flex items-center gap-0.5">
+													{item.badge && (
+														<span className="text-[10px] px-1 py-0.5 bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-400 rounded">
+															{item.badge}
+														</span>
+													)}
+													{item.hasArrow && (
+														<ChevronRight className="w-3.5 h-3.5" />
+													)}
+												</div>
+											</Link>
+										)}
+									</li>
+								);
+							})}
+						</ul>
+					</div>
+				))}
 			</div>
+
+			{/* Bottom Section */}
+			<div className="border-t border-zinc-200 dark:border-zinc-800 p-3 space-y-1.5">
+				{bottomLinks.map((link, index) => {
+					const Icon = link.icon;
+					return (
+						<a
+							key={index}
+							href="#"
+							className="flex items-center justify-between px-2.5 py-1.5 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors group"
+						>
+							<div className="flex items-center gap-1.5">
+								<Icon className="w-3.5 h-3.5" />
+								<span>{link.name}</span>
+							</div>
+							{link.hasExternal && (
+								<ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-zinc-600 dark:text-zinc-400" />
+							)}
+						</a>
+					);
+				})}
+			</div>
+		</div>
+	);
+
+	return (
+		<>
+			{/* Desktop: Fixed Sidebar */}
+			<div className="hidden lg:block fixed left-0 top-0 w-64 h-screen z-50">
+				{sidebarContent}
+			</div>
+
+			{/* Mobile: Drawer with Animation */}
+			<AnimatePresence>
+				{isOpen && (
+					<>
+						{/* Backdrop */}
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							onClick={closeSidebar}
+							className="fixed inset-0 bg-black/50 dark:bg-black/70 z-[55] lg:hidden"
+						/>
+						{/* Drawer */}
+						<motion.div
+							initial={{ x: -256 }}
+							animate={{ x: 0 }}
+							exit={{ x: -256 }}
+							transition={{ type: "tween", duration: 0.2 }}
+							className="fixed left-0 top-0 h-screen z-[60] lg:hidden"
+						>
+							{sidebarContent}
+						</motion.div>
+					</>
+				)}
+			</AnimatePresence>
+
 			{isSearchModalOpen && (
 				<div
 					className="fixed inset-0 bg-black/50 dark:bg-black/70 z-[60] flex items-start justify-center pt-20"

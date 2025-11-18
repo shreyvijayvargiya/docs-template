@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "../lib/theme-provider";
+import { SidebarProvider } from "../lib/sidebar-provider";
 import { getThemeFromCookie } from "../lib/theme-utils-server";
 import AIChatbot from "../modules/AIChatbot";
 import Sidebar from "../modules/Sidebar";
@@ -49,14 +50,16 @@ export default async function RootLayout({ children }) {
 				className={`${inter.className} flex bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100`}
 			>
 				<ThemeProvider initialTheme={theme}>
-					<Navbar />
-					<Sidebar />
-					<AIChatbot />
-					<div className="w-full flex h-screen overflow-hidden pt-12">
-						<main className="overflow-y-auto hide-scrollbar flex-1">
-							{children}
-						</main>
-					</div>
+					<SidebarProvider>
+						<Navbar />
+						<Sidebar />
+						<AIChatbot />
+						<div className="w-full flex h-screen overflow-hidden pt-12">
+							<main className="overflow-y-auto hide-scrollbar flex-1">
+								{children}
+							</main>
+						</div>
+					</SidebarProvider>
 				</ThemeProvider>
 			</body>
 		</html>
