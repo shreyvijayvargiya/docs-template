@@ -9,9 +9,39 @@ import Navbar from "../modules/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://your-site.com";
+
 export const metadata = {
-	title: "Docs Template",
+	title: {
+		default: "Docs Template",
+		template: "%s | Docs Template",
+	},
 	description: "Modern Nextjs React Tailwind Documentation Template",
+	metadataBase: new URL(siteUrl),
+	openGraph: {
+		type: "website",
+		locale: "en_US",
+		url: siteUrl,
+		siteName: "Docs Template",
+		title: "Docs Template",
+		description: "Modern Nextjs React Tailwind Documentation Template",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "Docs Template",
+		description: "Modern Nextjs React Tailwind Documentation Template",
+	},
+	robots: {
+		index: true,
+		follow: true,
+		googleBot: {
+			index: true,
+			follow: true,
+			"max-video-preview": -1,
+			"max-image-preview": "large",
+			"max-snippet": -1,
+		},
+	},
 };
 
 export default async function RootLayout({ children }) {

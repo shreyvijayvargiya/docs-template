@@ -40,6 +40,8 @@ export default function PrevNextNav({ prev, next }) {
 					</Link>
 				) : null}
 			</div>
+			<br />
+			<br />
 		</div>
 	);
 }
