@@ -1,0 +1,94 @@
+# Billing
+
+Comprehensive guide to billing and invoicing features.
+
+## Billing Overview
+
+Our billing system provides flexible pricing models and automated invoicing.
+
+## Billing Models
+
+### Usage-Based Billing
+
+Charge based on actual usage:
+
+```javascript
+{
+  model: 'usage',
+  meter: 'api-calls',
+  rate: 0.01
+}
+```
+
+### Subscription Billing
+
+Recurring charges:
+
+```javascript
+{
+  model: 'subscription',
+  plan: 'pro',
+  interval: 'monthly',
+  amount: 99.99
+}
+```
+
+### Tiered Billing
+
+Different rates for different tiers:
+
+```javascript
+{
+  model: 'tiered',
+  tiers: [
+    { upTo: 1000, rate: 0.01 },
+    { upTo: 10000, rate: 0.008 },
+    { above: 10000, rate: 0.005 }
+  ]
+}
+```
+
+## Invoice Generation
+
+### Automatic Invoicing
+
+Configure automatic invoice generation:
+
+```javascript
+{
+  frequency: 'monthly',
+  dayOfMonth: 1,
+  paymentTerms: 'net-30'
+}
+```
+
+### Manual Invoicing
+
+Create invoices manually when needed.
+
+## Payment Processing
+
+Integrate with payment processors:
+
+- Stripe
+- PayPal
+- Bank transfers
+- Credit cards
+
+## Billing Cycles
+
+Configure billing cycles:
+
+- Daily
+- Weekly
+- Monthly
+- Quarterly
+- Annually
+
+## Best Practices
+
+- Set clear billing terms
+- Provide detailed invoices
+- Automate recurring billing
+- Handle failed payments gracefully
+

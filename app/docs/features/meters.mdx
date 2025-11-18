@@ -1,0 +1,94 @@
+# Meters
+
+Learn how to configure and use meters for tracking usage and billing.
+
+## What are Meters?
+
+Meters are measurement units used to track usage and calculate billing. They provide a flexible way to measure consumption of resources or services.
+
+## Creating Meters
+
+### Basic Meter
+
+```javascript
+const meter = {
+  name: 'api-calls',
+  unit: 'request',
+  aggregation: 'sum'
+};
+```
+
+### Advanced Meter
+
+```javascript
+const advancedMeter = {
+  name: 'storage-usage',
+  unit: 'GB',
+  aggregation: 'max',
+  windowSize: '1h',
+  groupBy: ['customer_id', 'region']
+};
+```
+
+## Meter Types
+
+### Counter Meters
+
+Track cumulative values:
+
+```javascript
+{
+  type: 'counter',
+  increment: 1
+}
+```
+
+### Gauge Meters
+
+Track current values:
+
+```javascript
+{
+  type: 'gauge',
+  value: currentValue
+}
+```
+
+### Histogram Meters
+
+Track distributions:
+
+```javascript
+{
+  type: 'histogram',
+  buckets: [0, 10, 50, 100, 500]
+}
+```
+
+## Aggregation Methods
+
+- **Sum**: Total of all values
+- **Average**: Mean value
+- **Max**: Maximum value
+- **Min**: Minimum value
+- **Count**: Number of events
+
+## Usage in Billing
+
+Meters are used to calculate charges:
+
+```javascript
+{
+  meter: 'api-calls',
+  rate: 0.01, // $0.01 per request
+  calculation: 'meter_value * rate'
+}
+```
+
+## Best Practices
+
+- Use descriptive meter names
+- Choose appropriate units
+- Set up proper aggregation
+- Monitor meter values regularly
+

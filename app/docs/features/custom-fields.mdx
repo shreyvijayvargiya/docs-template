@@ -1,0 +1,119 @@
+# Custom Fields
+
+Add custom fields to capture additional information.
+
+## Overview
+
+Custom fields allow you to collect and store additional data beyond standard fields.
+
+## Field Types
+
+### Text Fields
+
+Single-line text input:
+
+```javascript
+{
+  type: 'text',
+  name: 'company-name',
+  label: 'Company Name',
+  required: true
+}
+```
+
+### Textarea
+
+Multi-line text input:
+
+```javascript
+{
+  type: 'textarea',
+  name: 'description',
+  label: 'Description',
+  rows: 5
+}
+```
+
+### Number Fields
+
+Numeric input:
+
+```javascript
+{
+  type: 'number',
+  name: 'employee-count',
+  label: 'Employee Count',
+  min: 1,
+  max: 10000
+}
+```
+
+### Select Fields
+
+Dropdown selection:
+
+```javascript
+{
+  type: 'select',
+  name: 'industry',
+  label: 'Industry',
+  options: ['Technology', 'Finance', 'Healthcare', 'Other']
+}
+```
+
+### Date Fields
+
+Date picker:
+
+```javascript
+{
+  type: 'date',
+  name: 'start-date',
+  label: 'Start Date'
+}
+```
+
+## Creating Custom Fields
+
+```javascript
+const customField = {
+  entity: 'customer',
+  name: 'custom-field-1',
+  type: 'text',
+  label: 'Custom Information',
+  required: false,
+  validation: {
+    minLength: 3,
+    maxLength: 100
+  }
+};
+```
+
+## Using Custom Fields
+
+### In Forms
+
+```javascript
+<form>
+  <CustomField field={customField} />
+</form>
+```
+
+### In API
+
+```javascript
+await updateCustomer({
+  id: 'customer123',
+  customFields: {
+    'custom-field-1': 'value'
+  }
+});
+```
+
+## Best Practices
+
+- Use descriptive field names
+- Set appropriate validation
+- Keep fields organized
+- Document field purposes
+

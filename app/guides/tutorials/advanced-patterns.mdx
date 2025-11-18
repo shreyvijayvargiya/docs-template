@@ -1,0 +1,131 @@
+# Advanced Patterns
+
+Learn advanced patterns and techniques for building robust applications.
+
+## Error Handling Patterns
+
+### Retry Logic
+
+```javascript
+async function fetchWithRetry(url, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await client.get(url);
+    } catch (error) {
+      if (i === maxRetries - 1) throw error;
+      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+    }
+  }
+}
+```
+
+### Circuit Breaker Pattern
+
+```javascript
+class CircuitBreaker {
+  constructor(threshold = 5, timeout = 60000) {
+    this.failures = 0;
+    this.threshold = threshold;
+    this.timeout = timeout;
+    this.state = 'CLOSED';
+  }
+
+  async execute(fn) {
+    if (this.state === 'OPEN') {
+      throw new Error('Circuit breaker is OPEN');
+    }
+
+    try {
+      const result = await fn();
+      this.failures = 0;
+      this.state = 'CLOSED';
+      return result;
+    } catch (error) {
+      this.failures++;
+      if (this.failures >= this.threshold) {
+        this.state = 'OPEN';
+        setTimeout(() => {
+          this.state = 'HALF_OPEN';
+        }, this.timeout);
+      }
+      throw error;
+    }
+  }
+}
+```
+
+## Caching Strategies
+
+### In-Memory Cache
+
+```javascript
+class Cache {
+  constructor(ttl = 60000) {
+    this.cache = new Map();
+    this.ttl = ttl;
+  }
+
+  get(key) {
+    const item = this.cache.get(key);
+    if (!item) return null;
+    if (Date.now() > item.expiry) {
+      this.cache.delete(key);
+      return null;
+    }
+    return item.value;
+  }
+
+  set(key, value) {
+    this.cache.set(key, {
+      value,
+      expiry: Date.now() + this.ttl
+    });
+  }
+}
+```
+
+## Batch Operations
+
+```javascript
+async function batchCreate(items) {
+  const batchSize = 10;
+  const results = [];
+
+  for (let i = 0; i < items.length; i += batchSize) {
+    const batch = items.slice(i, i + batchSize);
+    const batchResults = await Promise.all(
+      batch.map(item => client.products.create(item))
+    );
+    results.push(...batchResults);
+  }
+
+  return results;
+}
+```
+
+## Rate Limiting
+
+```javascript
+class RateLimiter {
+  constructor(maxRequests, windowMs) {
+    this.maxRequests = maxRequests;
+    this.windowMs = windowMs;
+    this.requests = [];
+  }
+
+  async check() {
+    const now = Date.now();
+    this.requests = this.requests.filter(
+      time => now - time < this.windowMs
+    );
+
+    if (this.requests.length >= this.maxRequests) {
+      const waitTime = this.windowMs - (now - this.requests[0]);
+      await new Promise(resolve => setTimeout(resolve, waitTime));
+    }
+
+    this.requests.push(now);
+  }
+}
+```
+

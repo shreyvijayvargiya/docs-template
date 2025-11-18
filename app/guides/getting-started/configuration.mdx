@@ -1,0 +1,85 @@
+# Configuration Guide
+
+Learn how to configure the SDK for your specific needs.
+
+## Basic Configuration
+
+Initialize the client with your API key:
+
+```javascript
+import { Client } from '@your-sdk/core';
+
+const client = new Client({
+  apiKey: process.env.API_KEY
+});
+```
+
+## Environment Variables
+
+Store sensitive information in environment variables:
+
+```bash
+# .env
+API_KEY=your_api_key_here
+ENVIRONMENT=production
+```
+
+```javascript
+const client = new Client({
+  apiKey: process.env.API_KEY,
+  environment: process.env.ENVIRONMENT
+});
+```
+
+## Advanced Configuration
+
+### Custom Base URL
+
+```javascript
+const client = new Client({
+  apiKey: process.env.API_KEY,
+  baseURL: 'https://api.custom-domain.com'
+});
+```
+
+### Request Timeout
+
+```javascript
+const client = new Client({
+  apiKey: process.env.API_KEY,
+  timeout: 30000 // 30 seconds
+});
+```
+
+### Retry Configuration
+
+```javascript
+const client = new Client({
+  apiKey: process.env.API_KEY,
+  retry: {
+    maxAttempts: 3,
+    delay: 1000
+  }
+});
+```
+
+## TypeScript Configuration
+
+For TypeScript projects, enable strict type checking:
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "esModuleInterop": true
+  }
+}
+```
+
+## Best Practices
+
+1. **Never commit API keys** to version control
+2. **Use environment variables** for configuration
+3. **Enable logging** in development
+4. **Set appropriate timeouts** for your use case
+

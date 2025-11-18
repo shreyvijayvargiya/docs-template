@@ -1,0 +1,81 @@
+# Products API
+
+The Products API allows you to manage products in your account.
+
+## List Products
+
+Retrieve a list of all products:
+
+```bash
+GET /v1/products
+```
+
+### Response
+
+```json
+{
+  "data": [
+    {
+      "id": "prod_123",
+      "name": "Premium Plan",
+      "price": 29.99,
+      "currency": "USD"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "per_page": 20,
+    "total": 1
+  }
+}
+```
+
+## Get Product
+
+Retrieve a specific product by ID:
+
+```bash
+GET /v1/products/{product_id}
+```
+
+### Parameters
+
+- `product_id` (required): The unique identifier of the product
+
+## Create Product
+
+Create a new product:
+
+```bash
+POST /v1/products
+Content-Type: application/json
+
+{
+  "name": "New Product",
+  "price": 19.99,
+  "currency": "USD"
+}
+```
+
+## Update Product
+
+Update an existing product:
+
+```bash
+PATCH /v1/products/{product_id}
+Content-Type: application/json
+
+{
+  "name": "Updated Product Name",
+  "price": 24.99
+}
+```
+
+## Delete Product
+
+Delete a product:
+
+```bash
+DELETE /v1/products/{product_id}
+```
+

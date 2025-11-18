@@ -1,0 +1,67 @@
+# Event Ingestion
+
+Learn how to ingest and process events in our platform.
+
+## What is Event Ingestion?
+
+Event ingestion is the process of collecting and processing events from various sources in real-time.
+
+## Supported Event Sources
+
+We support ingestion from multiple sources:
+
+- **API**: Direct API calls
+- **Webhooks**: HTTP webhook endpoints
+- **Message Queues**: Kafka, RabbitMQ, etc.
+- **File Uploads**: CSV, JSON files
+- **Streaming**: Real-time data streams
+
+## Setting Up Event Ingestion
+
+### Step 1: Configure Source
+
+First, configure your event source:
+
+```javascript
+const source = {
+	type: "api",
+	endpoint: "https://api.example.com/events",
+	authentication: {
+		type: "bearer",
+		token: "your-token",
+	},
+};
+```
+
+### Step 2: Define Event Schema
+
+Define the structure of your events:
+
+```json
+{
+	"eventType": "purchase",
+	"timestamp": "2024-01-01T00:00:00Z",
+	"userId": "user123",
+	"amount": 99.99
+}
+```
+
+### Step 3: Start Ingestion
+
+Once configured, events will be automatically ingested and processed.
+
+## Event Processing
+
+Events go through several processing stages:
+
+1. **Validation**: Ensure event format is correct
+2. **Enrichment**: Add additional context
+3. **Transformation**: Convert to internal format
+4. **Storage**: Persist for analysis
+
+## Best Practices
+
+- Use consistent event schemas
+- Include timestamps for all events
+- Validate events before ingestion
+- Monitor ingestion rates

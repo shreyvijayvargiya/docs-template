@@ -1,0 +1,97 @@
+# Seat-Based Pricing
+
+Implement pricing based on the number of users or seats.
+
+## Overview
+
+Seat-based pricing charges customers based on the number of users or seats they need.
+
+## Pricing Models
+
+### Per Seat Pricing
+
+Charge per user:
+
+```javascript
+{
+  model: 'per-seat',
+  pricePerSeat: 10.00,
+  currency: 'USD',
+  billingCycle: 'monthly'
+}
+```
+
+### Tiered Seat Pricing
+
+Different rates for different seat counts:
+
+```javascript
+{
+  model: 'tiered-seats',
+  tiers: [
+    { seats: 1-10, price: 15.00 },
+    { seats: 11-50, price: 12.00 },
+    { seats: 51+, price: 10.00 }
+  ]
+}
+```
+
+## Seat Management
+
+### Adding Seats
+
+```javascript
+await addSeats({
+  customerId: 'customer123',
+  seats: 5,
+  effectiveDate: '2024-01-01'
+});
+```
+
+### Removing Seats
+
+```javascript
+await removeSeats({
+  customerId: 'customer123',
+  seats: 2,
+  effectiveDate: '2024-01-15'
+});
+```
+
+### Seat Limits
+
+Set maximum seats:
+
+```javascript
+{
+  plan: 'enterprise',
+  maxSeats: 100,
+  overageAllowed: false
+}
+```
+
+## Billing Calculation
+
+Seats are billed:
+
+- Pro-rated for partial periods
+- Based on active seats
+- Updated in real-time
+- Reflected in invoices
+
+## Use Cases
+
+Ideal for:
+
+- Team collaboration tools
+- Business software
+- Enterprise applications
+- Multi-user platforms
+
+## Best Practices
+
+- Set clear seat definitions
+- Provide seat management tools
+- Offer volume discounts
+- Monitor seat usage
+

@@ -1,0 +1,33 @@
+# Strategy Introduction
+
+An overview of different ingestion strategies available in our platform.
+
+## What are Ingestion Strategies?
+
+Ingestion strategies define how events are collected, processed, and stored. Choosing the right strategy is crucial for optimal performance.
+
+## Strategy Types
+
+We offer several ingestion strategies:
+
+1. **LLM Strategy**: Optimized for large language model events
+2. **S3 Strategy**: Direct integration with AWS S3
+3. **Stream Strategy**: Real-time streaming processing
+4. **Delta Time Strategy**: Time-based delta processing
+
+## Choosing a Strategy
+
+Consider these factors when selecting a strategy:
+
+- **Volume**: How many events per second?
+- **Latency**: What's your acceptable delay?
+- **Storage**: Where do you want to store data?
+- **Cost**: What's your budget?
+
+## Implementation
+
+Each strategy has its own implementation approach. See the specific strategy documentation for details.
+
+## Migration Between Strategies
+
+You can migrate between strategies, but it requires careful planning and data migration.

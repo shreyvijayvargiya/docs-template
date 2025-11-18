@@ -1,0 +1,103 @@
+# Billing API
+
+The Billing API allows you to manage billing information, invoices, and payments.
+
+## Get Billing Information
+
+Retrieve current billing information:
+
+```bash
+GET /v1/billing
+```
+
+### Response
+
+```json
+{
+  "customer_id": "cust_123",
+  "payment_method": {
+    "type": "card",
+    "last4": "4242"
+  },
+  "billing_address": {
+    "line1": "123 Main St",
+    "city": "San Francisco",
+    "state": "CA",
+    "zip": "94105"
+  }
+}
+```
+
+## Update Billing Information
+
+Update billing details:
+
+```bash
+PATCH /v1/billing
+Content-Type: application/json
+
+{
+  "billing_address": {
+    "line1": "456 New St",
+    "city": "New York",
+    "state": "NY",
+    "zip": "10001"
+  }
+}
+```
+
+## List Invoices
+
+Retrieve all invoices:
+
+```bash
+GET /v1/billing/invoices
+```
+
+## Get Invoice
+
+Retrieve a specific invoice:
+
+```bash
+GET /v1/billing/invoices/{invoice_id}
+```
+
+## Download Invoice
+
+Download invoice PDF:
+
+```bash
+GET /v1/billing/invoices/{invoice_id}/download
+```
+
+## Payment Methods
+
+### Add Payment Method
+
+```bash
+POST /v1/billing/payment-methods
+Content-Type: application/json
+
+{
+  "type": "card",
+  "card": {
+    "number": "4242424242424242",
+    "exp_month": 12,
+    "exp_year": 2025,
+    "cvc": "123"
+  }
+}
+```
+
+### List Payment Methods
+
+```bash
+GET /v1/billing/payment-methods
+```
+
+### Set Default Payment Method
+
+```bash
+PATCH /v1/billing/payment-methods/{payment_method_id}/default
+```
+

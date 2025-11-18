@@ -1,0 +1,100 @@
+# Webhooks API
+
+Webhooks allow you to receive real-time notifications about events in your account.
+
+## Overview
+
+Webhooks are HTTP callbacks that notify your application when specific events occur. This enables real-time integration with your systems.
+
+## Supported Events
+
+- `invoice.created`: A new invoice was created
+- `invoice.paid`: An invoice was paid
+- `payment.failed`: A payment failed
+- `subscription.updated`: A subscription was updated
+- `meter.usage.recorded`: Usage was recorded for a meter
+
+## Create Webhook
+
+Register a webhook endpoint:
+
+```bash
+POST /v1/webhooks
+Content-Type: application/json
+
+{
+  "url": "https://your-app.com/webhooks",
+  "events": ["invoice.created", "invoice.paid"],
+  "secret": "your_webhook_secret"
+}
+```
+
+## List Webhooks
+
+Retrieve all registered webhooks:
+
+```bash
+GET /v1/webhooks
+```
+
+## Get Webhook
+
+Retrieve a specific webhook:
+
+```bash
+GET /v1/webhooks/{webhook_id}
+```
+
+## Update Webhook
+
+Update webhook configuration:
+
+```bash
+PATCH /v1/webhooks/{webhook_id}
+Content-Type: application/json
+
+{
+  "url": "https://your-new-app.com/webhooks",
+  "events": ["invoice.created", "payment.failed"]
+}
+```
+
+## Delete Webhook
+
+Remove a webhook:
+
+```bash
+DELETE /v1/webhooks/{webhook_id}
+```
+
+## Webhook Payload
+
+Example webhook payload:
+
+```json
+{
+  "id": "evt_123",
+  "type": "invoice.created",
+  "data": {
+    "invoice_id": "inv_456",
+    "amount": 99.99,
+    "currency": "USD"
+  },
+  "created_at": "2024-01-15T10:00:00Z"
+}
+```
+
+## Verifying Webhooks
+
+Verify webhook signatures to ensure authenticity:
+
+```javascript
+const crypto = require('crypto');
+
+function verifyWebhook(payload, signature, secret) {
+  const hmac = crypto.createHmac('sha256', secret);
+  const digest = hmac.update(payload).digest('hex');
+  return digest === signature;
+}
+```
+

@@ -1,0 +1,40 @@
+# API Keys
+
+API keys are the simplest way to authenticate your requests to our API.
+
+## Generating API Keys
+
+You can generate API keys from your dashboard:
+
+1. Navigate to Settings > API Keys
+2. Click "Generate New Key"
+3. Copy and securely store your key
+
+## Using API Keys
+
+Include your API key in the `Authorization` header:
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  https://api.example.com/v1/products
+```
+
+## Security Best Practices
+
+- **Never commit API keys to version control**
+- **Rotate keys regularly**
+- **Use different keys for different environments**
+- **Revoke keys that are no longer needed**
+
+## Key Permissions
+
+API keys can have different permission levels:
+
+- **Read-only**: Can only read data
+- **Read-write**: Can read and modify data
+- **Admin**: Full access to all resources
+
+## Rate Limits
+
+API keys are subject to rate limits based on your plan. Check your dashboard for current limits.
+

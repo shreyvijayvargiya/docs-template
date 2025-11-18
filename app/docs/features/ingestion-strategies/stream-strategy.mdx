@@ -1,0 +1,85 @@
+# Stream Strategy
+
+Process events in real-time using streaming architecture.
+
+## Overview
+
+The Stream Strategy provides real-time event processing with low latency, perfect for applications requiring immediate data processing.
+
+## Architecture
+
+```
+Event Source → Stream → Processing → Storage
+```
+
+## Configuration
+
+### Basic Stream Setup
+
+```javascript
+const streamStrategy = {
+  type: 'stream',
+  source: {
+    type: 'kafka',
+    brokers: ['broker1:9092', 'broker2:9092'],
+    topic: 'events'
+  },
+  processing: {
+    parallelism: 4,
+    checkpointInterval: 60000
+  }
+};
+```
+
+## Supported Stream Sources
+
+- **Kafka**: Apache Kafka clusters
+- **Kinesis**: AWS Kinesis streams
+- **Pub/Sub**: Google Cloud Pub/Sub
+- **RabbitMQ**: RabbitMQ message queues
+
+## Processing Options
+
+### Windowing
+
+Process events in time windows:
+
+```javascript
+{
+  windowing: {
+    type: 'tumbling',
+    size: '5m'
+  }
+}
+```
+
+### Filtering
+
+Filter events before processing:
+
+```javascript
+{
+  filters: [
+    { field: 'eventType', operator: 'equals', value: 'purchase' }
+  ]
+}
+```
+
+## Performance Tuning
+
+Optimize for your workload:
+
+- Adjust parallelism
+- Configure buffer sizes
+- Set appropriate checkpoint intervals
+- Monitor throughput
+
+## Use Cases
+
+Ideal for:
+
+- Real-time analytics
+- Live dashboards
+- Event-driven architectures
+- IoT data processing
+

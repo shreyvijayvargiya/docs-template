@@ -1,0 +1,52 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import PrevNextNav from "./PrevNextNav";
+import TableOfContents from "./TableOfContents";
+import CopyPageButton from "./CopyPageButton";
+import PageFeedback from "./PageFeedback";
+import { getPrevNext } from "../lib/navigation-data";
+import { HeadingsProvider, useHeadings } from "../lib/headings-context";
+
+function MDXContentInner({ children, currentRoute, section, baseRoute }) {
+	const { prev, next } = getPrevNext(section, baseRoute, currentRoute);
+	const { headings } = useHeadings();
+	const contentRef = useRef(null);
+
+	return (
+		<div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
+			<div className="p-10 w-1/2 mx-auto flex gap-12 justify-center">
+				{/* Spacer for centering when TOC is visible */}
+				<div className="hidden xl:block w-64 flex-shrink-0" />
+
+				{/* Main Content - Centered */}
+				<main className="">
+					<br />
+					<div className="flex justify-end">
+						<CopyPageButton contentRef={contentRef} />
+					</div>
+					<div ref={contentRef} className="max-w-none">
+						{children}
+					</div>
+					<br />
+					<PageFeedback />
+					<br />
+					<PrevNextNav prev={prev} next={next} />
+				</main>
+
+				{/* Table of Contents - Right Side */}
+				<aside className="xl:block w-fit flex-shrink-0">
+					<TableOfContents headings={headings} key={currentRoute} />
+				</aside>
+			</div>
+		</div>
+	);
+}
+
+export default function MDXContent(props) {
+	return (
+		<HeadingsProvider>
+			<MDXContentInner {...props} />
+		</HeadingsProvider>
+	);
+}

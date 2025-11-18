@@ -1,0 +1,87 @@
+# Credits
+
+Manage and track credits in your system.
+
+## What are Credits?
+
+Credits are a flexible currency system that allows you to allocate, track, and use credits for various services and features.
+
+## Credit Types
+
+### Prepaid Credits
+
+Credits purchased in advance:
+
+```javascript
+{
+  type: 'prepaid',
+  amount: 1000,
+  currency: 'USD',
+  expiresAt: '2024-12-31'
+}
+```
+
+### Earned Credits
+
+Credits earned through promotions or referrals:
+
+```javascript
+{
+  type: 'earned',
+  source: 'referral',
+  amount: 50
+}
+```
+
+## Managing Credits
+
+### Adding Credits
+
+```javascript
+await addCredits({
+	customerId: "customer123",
+	amount: 500,
+	reason: "Promotional bonus",
+});
+```
+
+### Using Credits
+
+```javascript
+await useCredits({
+	customerId: "customer123",
+	amount: 10,
+	service: "api-calls",
+});
+```
+
+### Checking Balance
+
+```javascript
+const balance = await getCreditBalance("customer123");
+```
+
+## Credit Policies
+
+Configure credit policies:
+
+- Expiration rules
+- Transfer policies
+- Refund policies
+- Usage restrictions
+
+## Credit Reports
+
+Generate reports on credit usage:
+
+- Total credits issued
+- Credits consumed
+- Remaining balances
+- Expiration schedules
+
+## Best Practices
+
+- Set clear expiration policies
+- Monitor credit balances
+- Automate credit allocation
+- Provide credit history to customers

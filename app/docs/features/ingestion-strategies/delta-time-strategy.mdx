@@ -1,0 +1,87 @@
+# Delta Time Strategy
+
+Process only the changes (deltas) since the last processing time.
+
+## Overview
+
+The Delta Time Strategy is efficient for processing incremental updates, reducing processing time and costs by only handling new or changed data.
+
+## How It Works
+
+1. Track the last processed timestamp
+2. Query for events after that timestamp
+3. Process only the delta
+4. Update the timestamp
+
+## Configuration
+
+```javascript
+const deltaStrategy = {
+  type: 'delta-time',
+  source: {
+    type: 'database',
+    table: 'events',
+    timestampField: 'created_at'
+  },
+  interval: '5m',
+  lookback: '1h'
+};
+```
+
+## Benefits
+
+- **Efficiency**: Only process new data
+- **Cost Savings**: Reduce processing costs
+- **Speed**: Faster processing times
+- **Scalability**: Handle large datasets
+
+## Implementation
+
+### Database Source
+
+```javascript
+{
+  source: {
+    type: 'postgres',
+    connection: 'postgresql://...',
+    query: 'SELECT * FROM events WHERE created_at > $1',
+    parameters: [lastTimestamp]
+  }
+}
+```
+
+### API Source
+
+```javascript
+{
+  source: {
+    type: 'api',
+    endpoint: 'https://api.example.com/events',
+    queryParams: {
+      since: lastTimestamp
+    }
+  }
+}
+```
+
+## Handling Gaps
+
+Configure gap detection:
+
+```javascript
+{
+  gapDetection: {
+    enabled: true,
+    maxGap: '1h',
+    alert: true
+  }
+}
+```
+
+## Best Practices
+
+- Set appropriate intervals
+- Monitor for processing gaps
+- Handle timezone issues
+- Use reliable timestamp sources
+

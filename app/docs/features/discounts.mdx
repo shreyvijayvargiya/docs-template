@@ -1,0 +1,127 @@
+# Discounts
+
+Create and manage discounts for your customers.
+
+## Discount Types
+
+### Percentage Discount
+
+Discount by percentage:
+
+```javascript
+{
+  type: 'percentage',
+  value: 20, // 20% off
+  applicableTo: 'all'
+}
+```
+
+### Fixed Amount Discount
+
+Discount by fixed amount:
+
+```javascript
+{
+  type: 'fixed',
+  value: 50.00, // $50 off
+  currency: 'USD'
+}
+```
+
+### Free Shipping
+
+Free shipping discount:
+
+```javascript
+{
+  type: 'free-shipping',
+  minimumOrder: 100.00
+}
+```
+
+## Discount Rules
+
+### Customer-Based
+
+Apply to specific customers:
+
+```javascript
+{
+  type: 'customer',
+  customerIds: ['customer1', 'customer2']
+}
+```
+
+### Product-Based
+
+Apply to specific products:
+
+```javascript
+{
+  type: 'product',
+  productIds: ['product1', 'product2']
+}
+```
+
+### Time-Based
+
+Apply during specific periods:
+
+```javascript
+{
+  type: 'time',
+  startDate: '2024-01-01',
+  endDate: '2024-12-31'
+}
+```
+
+## Creating Discounts
+
+```javascript
+const discount = {
+  code: 'SUMMER2024',
+  type: 'percentage',
+  value: 25,
+  minPurchase: 100.00,
+  maxUses: 1000,
+  expiresAt: '2024-08-31'
+};
+```
+
+## Applying Discounts
+
+### At Checkout
+
+```javascript
+await applyDiscount({
+  checkoutId: 'checkout123',
+  discountCode: 'SUMMER2024'
+});
+```
+
+### Via API
+
+```javascript
+await createDiscount({
+  code: 'WELCOME10',
+  type: 'percentage',
+  value: 10
+});
+```
+
+## Discount Analytics
+
+Track discount performance:
+
+- Usage statistics
+- Revenue impact
+- Customer acquisition
+- Conversion rates
+
+## Best Practices
+
+- Set clear expiration dates
+- Limit discount usage
+- Monitor discount effectiveness
+- Test discount codes before launch
+

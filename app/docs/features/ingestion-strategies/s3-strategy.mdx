@@ -1,0 +1,86 @@
+# S3 Strategy
+
+Ingest events directly from AWS S3 buckets.
+
+## Overview
+
+The S3 Strategy allows you to process events stored in S3 buckets, making it ideal for batch processing and data lake architectures.
+
+## Setup
+
+### Prerequisites
+
+- AWS account with S3 access
+- IAM role with appropriate permissions
+- S3 bucket configured
+
+### Configuration
+
+```javascript
+const s3Strategy = {
+  type: 's3',
+  bucket: 'your-events-bucket',
+  region: 'us-east-1',
+  credentials: {
+    accessKeyId: 'your-key',
+    secretAccessKey: 'your-secret'
+  },
+  pattern: 'events/*.json'
+};
+```
+
+## Processing Modes
+
+### Batch Processing
+
+Process files in batches:
+
+```javascript
+{
+  mode: 'batch',
+  batchSize: 100,
+  schedule: '0 * * * *' // Every hour
+}
+```
+
+### Real-time Processing
+
+Process files as they arrive:
+
+```javascript
+{
+  mode: 'realtime',
+  trigger: 's3:ObjectCreated:*'
+}
+```
+
+## File Formats
+
+Supported file formats:
+
+- JSON (`.json`)
+- CSV (`.csv`)
+- Parquet (`.parquet`)
+- Avro (`.avro`)
+
+## Error Handling
+
+Configure error handling:
+
+```javascript
+{
+  errorHandling: {
+    retryAttempts: 3,
+    deadLetterQueue: 's3://bucket/dlq/',
+    notification: true
+  }
+}
+```
+
+## Best Practices
+
+- Use appropriate IAM roles
+- Enable versioning on S3 buckets
+- Set up monitoring and alerts
+- Use compression for large files
+

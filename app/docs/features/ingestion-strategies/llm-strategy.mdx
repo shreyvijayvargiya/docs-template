@@ -1,0 +1,79 @@
+# LLM Strategy
+
+Optimize your event ingestion for Large Language Model workloads.
+
+## Overview
+
+The LLM Strategy is designed specifically for handling events related to language model operations, including:
+
+- Token usage tracking
+- Request/response logging
+- Model performance metrics
+- Cost analysis
+
+## Configuration
+
+### Basic Setup
+
+```javascript
+const llmStrategy = {
+  type: 'llm',
+  model: 'gpt-4',
+  tracking: {
+    tokens: true,
+    latency: true,
+    costs: true
+  }
+};
+```
+
+### Advanced Configuration
+
+```javascript
+const advancedConfig = {
+  batchSize: 1000,
+  compression: 'gzip',
+  retention: '30d',
+  aggregation: {
+    enabled: true,
+    interval: '1h'
+  }
+};
+```
+
+## Features
+
+### Token Tracking
+
+Automatically track token usage for each request:
+
+- Input tokens
+- Output tokens
+- Total tokens
+- Cost per token
+
+### Performance Metrics
+
+Monitor model performance:
+
+- Response latency
+- Throughput
+- Error rates
+- Success rates
+
+## Best Practices
+
+- Enable token tracking for cost optimization
+- Set appropriate batch sizes
+- Use compression for large payloads
+- Configure retention policies
+
+## Use Cases
+
+Ideal for:
+
+- AI application monitoring
+- Cost optimization
+- Performance analysis
+- Usage analytics
+

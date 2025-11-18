@@ -1,0 +1,56 @@
+# Quick Start Guide
+
+Get up and running with our platform in minutes.
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- Node.js 18+ installed
+- A code editor
+- Basic knowledge of JavaScript/TypeScript
+
+## Installation
+
+Install the SDK using your preferred package manager:
+
+```bash
+# npm
+npm install @your-sdk/core
+
+# yarn
+yarn add @your-sdk/core
+
+# pnpm
+pnpm add @your-sdk/core
+```
+
+## Basic Setup
+
+1. **Import the SDK**
+
+```javascript
+import { Client } from '@your-sdk/core';
+```
+
+2. **Initialize the Client**
+
+```javascript
+const client = new Client({
+  apiKey: process.env.API_KEY
+});
+```
+
+3. **Make Your First Request**
+
+```javascript
+const products = await client.products.list();
+console.log(products);
+```
+
+## Next Steps
+
+- Learn about [Installation](/guides/getting-started/installation)
+- Explore [Configuration](/guides/getting-started/configuration)
+- Check out [Building Your First App](/guides/tutorials/building-your-first-app)
+

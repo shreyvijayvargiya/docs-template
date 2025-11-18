@@ -1,0 +1,76 @@
+# OAuth Authentication
+
+OAuth 2.0 provides a secure way to authenticate and authorize access to your resources.
+
+## Overview
+
+OAuth 2.0 is an industry-standard protocol for authorization. It allows third-party applications to access user data without exposing passwords.
+
+## OAuth Flow
+
+### 1. Authorization Request
+
+Redirect users to our authorization endpoint:
+
+```
+GET https://api.example.com/oauth/authorize?
+  client_id=YOUR_CLIENT_ID&
+  redirect_uri=YOUR_REDIRECT_URI&
+  response_type=code&
+  scope=read write
+```
+
+### 2. Authorization Code
+
+After user approval, you'll receive an authorization code via the redirect URI.
+
+### 3. Access Token
+
+Exchange the authorization code for an access token:
+
+```bash
+POST https://api.example.com/oauth/token
+Content-Type: application/json
+
+{
+  "grant_type": "authorization_code",
+  "code": "AUTHORIZATION_CODE",
+  "redirect_uri": "YOUR_REDIRECT_URI",
+  "client_id": "YOUR_CLIENT_ID",
+  "client_secret": "YOUR_CLIENT_SECRET"
+}
+```
+
+### 4. Using the Access Token
+
+Include the access token in your API requests:
+
+```bash
+curl -H "Authorization: Bearer ACCESS_TOKEN" \
+  https://api.example.com/v1/products
+```
+
+## Scopes
+
+Scopes define what resources your application can access:
+
+- `read`: Read access to resources
+- `write`: Write access to resources
+- `admin`: Administrative access
+
+## Token Refresh
+
+Access tokens expire after a set period. Use the refresh token to obtain a new access token:
+
+```bash
+POST https://api.example.com/oauth/token
+Content-Type: application/json
+
+{
+  "grant_type": "refresh_token",
+  "refresh_token": "REFRESH_TOKEN",
+  "client_id": "YOUR_CLIENT_ID",
+  "client_secret": "YOUR_CLIENT_SECRET"
+}
+```
+
