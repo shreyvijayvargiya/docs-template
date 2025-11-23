@@ -29,7 +29,7 @@ const Home = () => {
 						Tailwind CSS. Fully customizable and production-ready.
 					</p>
 					<a
-						href="https://gumroad.com"
+						href="https://shreyvijayvargiya.gumroad.com/l/frontend-documentation-nextjs-template"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="inline-flex items-center gap-2 px-8 py-4 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl font-semibold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-lg hover:shadow-xl"
@@ -202,7 +202,7 @@ const Home = () => {
 						today. Includes full source code and lifetime updates.
 					</p>
 					<a
-						href="https://gumroad.com"
+						href="https://shreyvijayvargiya.gumroad.com/l/frontend-documentation-nextjs-template"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="inline-flex items-center gap-2 px-10 py-5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl font-semibold text-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-lg hover:shadow-xl"
