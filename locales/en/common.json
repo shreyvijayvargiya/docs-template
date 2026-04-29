@@ -1,0 +1,43 @@
+{
+	"tabs": {
+		"docs": "Docs",
+		"apiReference": "API Reference",
+		"guides": "Guides",
+		"changelog": "Changelog",
+		"support": "Support"
+	},
+	"nav": {
+		"toggleSidebar": "Toggle sidebar",
+		"toggleSidebarExpand": "Show sidebar",
+		"toggleSidebarCollapse": "Hide sidebar",
+		"language": "Language"
+	},
+	"search": {
+		"noResults": "No pages match your filter.",
+		"placeholder": "Search documentation…",
+		"title": "Search",
+		"sidebarPlaceholder": "Search…",
+		"quickNav": "Quick navigation",
+		"browseBySection": "Browse by section",
+		"shortcutsHint": "Use arrow keys and Enter · Esc to close"
+	},
+	"toc": {
+		"title": "On this page"
+	},
+	"footer": {
+		"brand": "Docs Template",
+		"tagline": "Documentation and guides for integrating with our APIs, SDKs, and billing platform.",
+		"product": "Product",
+		"linkDocs": "Documentation",
+		"linkApi": "API reference",
+		"linkGuides": "Guides",
+		"resources": "Resources",
+		"linkBlog": "Blog",
+		"linkChangelog": "Changelog",
+		"linkSupport": "Support",
+		"legal": "Legal",
+		"linkPrivacy": "Privacy policy",
+		"follow": "Follow us",
+		"rights": "All rights reserved."
+	}
+}

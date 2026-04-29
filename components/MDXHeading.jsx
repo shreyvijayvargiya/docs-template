@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useEffect, useRef } from "react";
+import { useMemo, useLayoutEffect } from "react";
 import { Link as LinkIcon } from "lucide-react";
 import { useHeadings } from "../lib/headings-context";
 
@@ -29,16 +29,10 @@ export default function MDXHeading({ level, children, ...props }) {
 	const { addHeading } = useHeadings();
 	const text = useMemo(() => extractText(children), [children]);
 	const id = useMemo(() => generateId(text), [text]);
-	const hasRegistered = useRef(false);
-
-	useEffect(() => {
-		// Only register headings on the client side
-		if (typeof window !== "undefined" && text && id && !hasRegistered.current) {
-			hasRegistered.current = true;
-			addHeading(id, text, level);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [id, text, level]);
+	useLayoutEffect(() => {
+		if (typeof window === "undefined" || !text || !id) return;
+		addHeading(id, text, level);
+	}, [id, text, level, addHeading]);
 
 	const HeadingTag = `h${level}`;
 	const classes = {

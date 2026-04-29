@@ -1,0 +1,43 @@
+{
+	"tabs": {
+		"docs": "Documentación",
+		"apiReference": "Referencia API",
+		"guides": "Guías",
+		"changelog": "Novedades",
+		"support": "Soporte"
+	},
+	"nav": {
+		"toggleSidebar": "Alternar barra lateral",
+		"toggleSidebarExpand": "Mostrar barra lateral",
+		"toggleSidebarCollapse": "Ocultar barra lateral",
+		"language": "Idioma"
+	},
+	"search": {
+		"noResults": "Ninguna página coincide con tu búsqueda.",
+		"placeholder": "Buscar en la documentación…",
+		"title": "Buscar",
+		"sidebarPlaceholder": "Buscar…",
+		"quickNav": "Navegación rápida",
+		"browseBySection": "Explorar por sección",
+		"shortcutsHint": "Flechas y Enter · Esc para cerrar"
+	},
+	"toc": {
+		"title": "En esta página"
+	},
+	"footer": {
+		"brand": "Plantilla Docs",
+		"tagline": "Documentación y guías para integrar con nuestras APIs, SDKs y plataforma de facturación.",
+		"product": "Producto",
+		"linkDocs": "Documentación",
+		"linkApi": "Referencia API",
+		"linkGuides": "Guías",
+		"resources": "Recursos",
+		"linkBlog": "Blog",
+		"linkChangelog": "Novedades",
+		"linkSupport": "Soporte",
+		"legal": "Legal",
+		"linkPrivacy": "Política de privacidad",
+		"follow": "Seguir",
+		"rights": "Todos los derechos reservados."
+	}
+}

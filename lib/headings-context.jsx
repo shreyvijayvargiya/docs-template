@@ -15,12 +15,8 @@ export function HeadingsProvider({ children }) {
 		});
 	}, []);
 
-	const clearHeadings = useCallback(() => {
-		setHeadings([]);
-	}, []);
-
 	return (
-		<HeadingsContext.Provider value={{ headings, addHeading, clearHeadings }}>
+		<HeadingsContext.Provider value={{ headings, addHeading }}>
 			{children}
 		</HeadingsContext.Provider>
 	);

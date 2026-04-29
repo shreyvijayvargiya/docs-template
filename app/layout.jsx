@@ -3,9 +3,12 @@ import "../globals.css";
 import { ThemeProvider } from "../lib/theme-provider";
 import { SidebarProvider } from "../lib/sidebar-provider";
 import { getThemeFromCookie } from "../lib/theme-utils-server";
+import { I18nProvider } from "../lib/i18n-provider";
 import AIChatbot from "../modules/AIChatbot";
 import Sidebar from "../modules/Sidebar";
 import Navbar from "../modules/Navbar";
+import MainShell from "../components/MainShell";
+import DocsFooter from "../components/DocsFooter";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,7 +48,6 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-	// Get theme from cookie on server side
 	const theme = (await getThemeFromCookie()) || "light";
 
 	return (
@@ -77,20 +79,19 @@ export default async function RootLayout({ children }) {
 			</head>
 			<body
 				suppressHydrationWarning
-				className={`${inter.className} flex bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100`}
+				className={`${inter.className} flex min-h-screen flex-col bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100`}
 			>
-				<ThemeProvider initialTheme={theme}>
-					<SidebarProvider>
-						<Navbar />
-						<Sidebar />
-						<AIChatbot />
-						<div className="w-full flex h-screen overflow-hidden pt-12">
-							<main className="overflow-y-auto hide-scrollbar flex-1">
-								{children}
-							</main>
-						</div>
-					</SidebarProvider>
-				</ThemeProvider>
+				<I18nProvider initialLocale="en">
+					<ThemeProvider initialTheme={theme}>
+						<SidebarProvider initialDesktopExpanded={true}>
+							<Navbar />
+							<Sidebar />
+							<AIChatbot />
+							<MainShell>{children}</MainShell>
+							<DocsFooter />
+						</SidebarProvider>
+					</ThemeProvider>
+				</I18nProvider>
 			</body>
 		</html>
 	);

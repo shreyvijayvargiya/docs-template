@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function TableOfContents({ headings = [] }) {
+	const { t } = useTranslation("common");
 	const [activeId, setActiveId] = useState("");
 
 	const scrollToHeading = useCallback((id) => {
@@ -19,6 +21,7 @@ export default function TableOfContents({ headings = [] }) {
 			});
 		}
 	}, []);
+
 
 	useEffect(() => {
 		// Handle initial hash on mount - wait for headings to be rendered
@@ -106,27 +109,29 @@ export default function TableOfContents({ headings = [] }) {
 	if (headings.length === 0) return null;
 
 	return (
-		<aside className="sticky top-32 h-fit border-l border-zinc-100 dark:border-zinc-800 overflow-y-auto">
-			<div className="">
-				<h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
-					On this page
+		<aside className="relative overflow-y-auto overscroll-contain pl-4 dark:border-zinc-700 w-full">
+			<div className="pb-4">
+				<h3 className="mb-3 px-1 font-sans text-xs font-semibold uppercase leading-4 tracking-wide text-zinc-600 dark:text-zinc-400">
+					{t("toc.title")}
 				</h3>
-				<nav className="my-2">
+				<nav className="space-y-2">
 					{headings.map(({ id, text, level }) => {
 						const isActive = activeId === id;
-						const paddingLeft =
-							level === 1 ? "0rem" : `${(level - 1) * 0.75}rem`;
+						const indent = level > 1 ? (level - 1) * 12 : 0;
 
 						return (
 							<button
 								key={id}
+								type="button"
 								onClick={(e) => handleClick(e, id)}
-								className={`block w-full text-left text-sm transition-colors hover:text-zinc-900 dark:hover:text-zinc-100 ${
+								className={`block w-full text-left text-sm rounded-md py-1.5 pl-3 border-l-2 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 ${
 									isActive
-										? "text-zinc-900 dark:text-zinc-100 font-medium border-l-2 border-zinc-900 dark:border-zinc-100 pl-3 -ml-6"
-										: "text-zinc-600 dark:text-zinc-400 pl-3"
+										? "text-zinc-900 dark:text-zinc-50 font-semibold border-zinc-900 dark:border-zinc-100 bg-zinc-50 dark:bg-zinc-900/30"
+										: "text-zinc-600 dark:text-zinc-400 border-transparent"
 								}`}
-								style={{ paddingLeft }}
+								style={{
+									paddingLeft: `calc(0.75rem + ${indent}px)`,
+								}}
 							>
 								{text}
 							</button>

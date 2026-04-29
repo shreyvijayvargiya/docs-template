@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import PrevNextNav from "./PrevNextNav";
 import TableOfContents from "./TableOfContents";
 import CopyPageButton from "./CopyPageButton";
@@ -14,38 +14,29 @@ function MDXContentInner({ children, currentRoute, section, baseRoute }) {
 	const contentRef = useRef(null);
 
 	return (
-		<div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
-			<div className="p-10 flex justify-center">
-				{/* Spacer for centering when TOC is visible */}
-				<div className="hidden xl:block w-64 flex-shrink-0" />
-
-				{/* Main Content - Fixed Width */}
-				<main className="w-[800px] flex-shrink-0">
-					<br />
-					<div className="flex justify-end">
-						<CopyPageButton contentRef={contentRef} />
-					</div>
-					<div ref={contentRef} className="max-w-none">
-						{children}
-					</div>
-					<br />
-					<PageFeedback />
-					<br />
-					<PrevNextNav prev={prev} next={next} />
-				</main>
-
-				{/* Table of Contents - Right Side */}
-				<aside className="hidden xl:block w-fit flex-shrink-0 ml-8">
-					<TableOfContents headings={headings} key={currentRoute} />
-				</aside>
+		<div className="flex w-full gap-4 gap-8 py-10 lg:flex-row lg:items-start lg:justify-between ">
+			<div className="w-full min-w-0 flex flex-col lg:max-w-[720px] xl:max-w-[760px] gap-2">
+			<div className="flex justify-end shrink-0">
+					<CopyPageButton contentRef={contentRef} />
+				</div>
+				<div ref={contentRef} className="max-w-none">
+					{children}
+				</div>
+				<PageFeedback />
+				<PrevNextNav prev={prev} next={next} />
 			</div>
+
+			<aside className="hidden lg:block sitcky top-20 left-full w-56 shrink-0">
+				<TableOfContents headings={headings} key={currentRoute} />
+				
+			</aside>
 		</div>
 	);
 }
 
 export default function MDXContent(props) {
 	return (
-		<HeadingsProvider>
+		<HeadingsProvider key={props.currentRoute}>
 			<MDXContentInner {...props} />
 		</HeadingsProvider>
 	);

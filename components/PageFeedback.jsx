@@ -19,7 +19,7 @@ export default function PageFeedback() {
 
 	return (
 		<div className="my-8 pt-6 flex items-center gap-2 ">
-			<p className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-3">
+			<p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
 				Is this page helpful?
 			</p>
 			<button
@@ -31,7 +31,7 @@ export default function PageFeedback() {
 						: "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700"
 				} disabled:opacity-50`}
 			>
-				<ThumbsUp className="w-3.5 h-3.5" />
+				<ThumbsUp className="w-4 h-4" />
 				<span>Yes</span>
 			</button>
 			<button
@@ -43,7 +43,7 @@ export default function PageFeedback() {
 						: "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700"
 				} disabled:opacity-50`}
 			>
-				<ThumbsDown className="w-3.5 h-3.5" />
+				<ThumbsDown className="w-4 h-4" />
 				<span>No</span>
 			</button>
 			{submitted && (

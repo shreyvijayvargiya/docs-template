@@ -4,38 +4,128 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
-	Search,
 	ChevronDown,
 	ChevronRight,
 	ExternalLink,
-	Sun,
-	Moon,
 	FileText,
 	MessageCircle,
 	LayoutDashboard,
-	X,
-	BookOpen,
-	Code,
-	GraduationCap,
-	History,
-	HelpCircle,
 	Sparkles,
+	PanelLeftClose,
+	Rocket,
+	ArrowRightLeft,
+	Package,
+	Info,
+	Inbox,
+	Gauge,
+	Coins,
+	Receipt,
+	LineChart,
+	Gift,
+	ShoppingCart,
+	Hourglass,
+	UsersRound,
+	FormInput,
+	PercentCircle,
+	Network,
+	Key,
+	Webhook,
+	Shield,
+	Hammer,
+	Boxes,
+	BadgeCheck,
+	Tag,
+	Archive as ArchiveIcon,
+	LifeBuoy,
+	Brain,
+	Cloud,
+	Radio,
+	Timer,
+	Layers2,
+	Zap,
+	Terminal,
+	Cog,
 } from "lucide-react";
-import { useTheme } from "../lib/theme-provider";
 import { useSidebar } from "../lib/sidebar-provider";
 
+/**
+ * Icons for each sidebar nav label. Compound keys use `SectionHeading|Label`;
+ * nested items use `SectionHeading|ParentDropdown|ChildLabel`.
+ */
+const SIDEBAR_NAV_ICONS = {
+	"Bootup|Introduction": Rocket,
+	"Bootup|Migrate to Docs": ArrowRightLeft,
+
+	"Features|Products": Package,
+	"Features|Usage Based Billing": PercentCircle,
+	"Features|Introduction": Info,
+	"Features|Event Ingestion": Inbox,
+	"Features|Ingestion Strategies": Network,
+	"Features|Meters": Gauge,
+	"Features|Credits": Coins,
+	"Features|Billing": Receipt,
+	"Features|Cost Insights": LineChart,
+	"Features|Benefits": Gift,
+	"Features|Checkout": ShoppingCart,
+	"Features|Trials": Hourglass,
+	"Features|Seat-Based Pricing": UsersRound,
+	"Features|Custom Fields": FormInput,
+	"Features|Discounts": PercentCircle,
+
+	"Features|Ingestion Strategies|Strategy Introduction": Layers2,
+	"Features|Ingestion Strategies|LLM Strategy": Brain,
+	"Features|Ingestion Strategies|S3 Strategy": Cloud,
+	"Features|Ingestion Strategies|Stream Strategy": Radio,
+	"Features|Ingestion Strategies|Delta Time Strategy": Timer,
+
+	"Authentication|Getting Started": Zap,
+	"Authentication|API Keys": Key,
+	"Authentication|OAuth": Shield,
+
+	"Endpoints|Products": Package,
+	"Endpoints|Meters": Gauge,
+	"Endpoints|Billing": Receipt,
+	"Endpoints|Webhooks": Webhook,
+
+	"Getting Started|Quick Start": Zap,
+	"Getting Started|Installation": Terminal,
+	"Getting Started|Configuration": Cog,
+
+	"Tutorials|Building Your First App": Hammer,
+	"Tutorials|Advanced Patterns": Boxes,
+	"Tutorials|Best Practices": BadgeCheck,
+
+	"Releases|Latest": Sparkles,
+	"Releases|v2.0.0": Tag,
+	"Releases|v1.5.0": Tag,
+	"Releases|v1.0.0": Tag,
+
+	"Archive|2024": ArchiveIcon,
+	"Archive|2023": ArchiveIcon,
+
+	"|Support": LifeBuoy,
+};
+
+function resolveSidebarNavIcon(sectionHeading, itemLabel, parentItemName = null) {
+	const head = sectionHeading ?? "";
+	const label = itemLabel ?? "";
+	const parent = parentItemName ?? "";
+	const key = parent ? `${head}|${parent}|${label}` : `${head}|${label}`;
+	return SIDEBAR_NAV_ICONS[key] ?? FileText;
+}
+
 const Sidebar = () => {
-	const { theme, toggleTheme } = useTheme();
-	const { isOpen, closeSidebar } = useSidebar();
+	const { t } = useTranslation("common");
+	const { isOpen, closeSidebar, desktopExpanded, toggleDesktopSidebar } =
+		useSidebar();
 	const pathname = usePathname();
-	const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 	const [openSections, setOpenSections] = useState({
 		usageBasedBilling: false,
 		ingestionStrategies: false,
 	});
 
-	// Close sidebar when route changes on mobile
 	useEffect(() => {
 		if (isOpen) {
 			closeSidebar();
@@ -43,31 +133,16 @@ const Sidebar = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pathname]);
 
-	const navbarTabs = [
-		{ id: "Docs", label: "Docs", icon: BookOpen, path: "/" },
-		{
-			id: "API Reference",
-			label: "API Reference",
-			icon: Code,
-			path: "/api-reference",
-		},
-		{ id: "Guides", label: "Guides", icon: GraduationCap, path: "/guides" },
-		{ id: "Changelog", label: "Changelog", icon: History, path: "/changelog" },
-		{ id: "Support", label: "Support", icon: HelpCircle, path: "/support" },
-	];
-
-	// Determine active navbar tab based on pathname
 	const getActiveNavbarTab = () => {
 		if (pathname.startsWith("/api-reference")) return "API Reference";
 		if (pathname.startsWith("/guides")) return "Guides";
 		if (pathname.startsWith("/changelog")) return "Changelog";
 		if (pathname.startsWith("/support")) return "Support";
-		return "Docs"; // Default to Docs
+		return "Docs";
 	};
 
 	const activeNavbarTab = getActiveNavbarTab();
 
-	// Get base route prefix based on active navbar tab
 	const getBaseRoute = () => {
 		switch (activeNavbarTab) {
 			case "API Reference":
@@ -92,28 +167,23 @@ const Sidebar = () => {
 		}));
 	};
 
-	// Helper function to generate slug from name
 	const generateSlug = (name) => {
 		return name.toLowerCase().replace(/\s+/g, "-");
 	};
 
-	// Helper function to generate route path
 	const getRoutePath = (heading, itemName, parentName = null) => {
 		const headingSlug = generateSlug(heading);
 		const itemSlug = generateSlug(itemName);
 
-		// Handle Support routes (simpler structure)
 		if (baseRoute === "/support" && !heading) {
 			return `${baseRoute}/${itemSlug}`;
 		}
 
-		// Handle nested paths (e.g., Ingestion Strategies sub-items)
 		if (parentName) {
 			const parentSlug = generateSlug(parentName);
 			return `${baseRoute}/${headingSlug}/${parentSlug}/${itemSlug}`;
 		}
 
-		// If heading is empty, just use item slug
 		if (!heading || headingSlug === "") {
 			return `${baseRoute}/${itemSlug}`;
 		}
@@ -121,7 +191,6 @@ const Sidebar = () => {
 		return `${baseRoute}/${headingSlug}/${itemSlug}`;
 	};
 
-	// Navigation data for Docs
 	const docsNavigationData = [
 		{
 			heading: "Bootup",
@@ -173,7 +242,6 @@ const Sidebar = () => {
 		},
 	];
 
-	// Navigation data for API Reference
 	const apiReferenceNavigationData = [
 		{
 			heading: "Authentication",
@@ -194,7 +262,6 @@ const Sidebar = () => {
 		},
 	];
 
-	// Navigation data for Guides
 	const guidesNavigationData = [
 		{
 			heading: "Getting Started",
@@ -214,7 +281,6 @@ const Sidebar = () => {
 		},
 	];
 
-	// Navigation data for Changelog
 	const changelogNavigationData = [
 		{
 			heading: "Releases",
@@ -234,7 +300,6 @@ const Sidebar = () => {
 		},
 	];
 
-	// Navigation data for Support
 	const supportNavigationData = [
 		{
 			heading: "",
@@ -242,7 +307,6 @@ const Sidebar = () => {
 		},
 	];
 
-	// Get navigation data based on active navbar tab
 	const getNavigationData = () => {
 		switch (activeNavbarTab) {
 			case "API Reference":
@@ -258,7 +322,7 @@ const Sidebar = () => {
 		}
 	};
 
-	const navigationData = getNavigationData();
+	const sidebarNavSections = getNavigationData();
 
 	const bottomLinks = [
 		{ name: "AI Assistant", icon: Sparkles, hasExternal: false, isAI: true },
@@ -269,111 +333,123 @@ const Sidebar = () => {
 
 	const sidebarContent = (
 		<div className="w-64 h-screen bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 flex flex-col">
-			{/* Header */}
-			<div className="p-4 border-b border-zinc-200 dark:border-zinc-800">
-				{/* Logo */}
-				<div className="flex items-center justify-between">
-					<div className="w-4 h-4 bg-zinc-900 dark:bg-zinc-800 rounded-full flex items-center justify-center">
-						<div className="w-2 h-2 bg-white dark:bg-zinc-100 rounded-full opacity-80"></div>
+			<div className="p-2 border-b border-zinc-200 dark:border-zinc-800">
+				<div className="flex items-center justify-between gap-2">
+					<div className="flex items-center gap-2 min-w-0">
+						<div className="w-4 h-4 bg-zinc-900 dark:bg-zinc-800 rounded-full flex-shrink-0 flex items-center justify-center">
+							<div className="w-2 h-2 bg-white dark:bg-zinc-100 rounded-full opacity-80" />
+						</div>
 					</div>
 					<button
-						onClick={toggleTheme}
-						className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
-						title={
-							theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
-						}
+						type="button"
+						onClick={toggleDesktopSidebar}
+						className="hidden lg:inline-flex p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
+						title={t("nav.toggleSidebarCollapse")}
+						aria-label={t("nav.toggleSidebarCollapse")}
 					>
-						{theme === "dark" ? (
-							<Sun className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
-						) : (
-							<Moon className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
-						)}
+						<PanelLeftClose className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
 					</button>
-				</div>
-
-				{/* Search Bar */}
-				<div className="relative">
-					<Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
-					<input
-						type="text"
-						placeholder="Search..."
-						onClick={() => setIsSearchModalOpen(true)}
-						onFocus={() => setIsSearchModalOpen(true)}
-						className="w-full pl-8 pr-12 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:border-transparent text-xs cursor-pointer"
-					/>
-					<kbd className="absolute right-2.5 top-1/2 transform -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded">
-						⌘K
-					</kbd>
 				</div>
 			</div>
 
-			{/* Navigation */}
-			<div className="flex-1 overflow-y-auto">
-				{navigationData.map((section, sectionIndex) => (
-					<div key={sectionIndex} className="px-3 py-1.5">
+			<div className="flex-1 overflow-y-auto px-1">
+				{sidebarNavSections.map((section, sectionIndex) => (
+					<div
+						key={sectionIndex}
+						className="border-b border-zinc-100 p-2 last:border-b-0 dark:border-zinc-800/80"
+					>
 						{section.heading && (
-							<h3 className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+							<h3 className="mb-3 px-1 font-sans text-xs font-semibold uppercase leading-4 tracking-wide text-zinc-600 dark:text-zinc-400">
 								{section.heading}
 							</h3>
 						)}
 						<ul className="space-y-0.5">
 							{section.items.map((item, itemIndex) => {
-								const isOpen = item.key ? openSections[item.key] : false;
+								const sectionOpen = item.key ? openSections[item.key] : false;
 								const routePath = getRoutePath(section.heading, item.name);
 								const isActive = pathname === routePath;
 
-								// Check if any sub-item is active
 								const hasActiveSubItem =
-									item.hasDropdown && item.subItems
+									item.hasDropdown &&
+									item.subItems &&
+									item.subItems.length > 0
 										? item.subItems.some((subItem) => {
 												const subRoutePath = getRoutePath(
 													section.heading,
 													subItem,
-													item.name
+													item.name,
 												);
 												return pathname === subRoutePath;
-										  })
+											})
 										: false;
+
+								const hasSubs =
+									item.hasDropdown && item.subItems && item.subItems.length > 0;
+
+								const ItemIcon = resolveSidebarNavIcon(
+									section.heading,
+									item.name,
+								);
 
 								return (
 									<li key={itemIndex}>
-										{item.hasDropdown && item.subItems ? (
+										{hasSubs ? (
 											<>
 												<button
+													type="button"
 													onClick={() => toggleSection(item.key)}
-													className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-xl transition-colors ${
+													className={`w-full flex items-center gap-2 px-3 py-2.5 text-[13px] leading-snug rounded-xl transition-colors ${
 														hasActiveSubItem
 															? "text-zinc-900 dark:text-zinc-100 font-bold"
 															: "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
 													}`}
 												>
-													<span>{item.name}</span>
-													{isOpen ? (
-														<ChevronDown className="w-3.5 h-3.5" />
+													<ItemIcon
+														className="h-4 w-4 shrink-0 opacity-80 text-zinc-500 dark:text-zinc-400"
+														strokeWidth={2}
+														aria-hidden
+													/>
+													<span className="flex-1 min-w-0 text-left truncate">
+														{item.name}
+													</span>
+													{sectionOpen ? (
+														<ChevronDown className="w-4 h-4 shrink-0" />
 													) : (
-														<ChevronRight className="w-3.5 h-3.5" />
+														<ChevronRight className="w-4 h-4 shrink-0" />
 													)}
 												</button>
-												{isOpen && (
-													<ul className="ml-3 mt-0.5 space-y-0.5">
+												{sectionOpen && (
+													<ul className="ml-1 mt-2 space-y-2 border-l border-zinc-200 dark:border-zinc-800 pl-3">
 														{item.subItems.map((subItem, subIndex) => {
 															const subRoutePath = getRoutePath(
 																section.heading,
 																subItem,
-																item.name
+																item.name,
 															);
 															const isSubActive = pathname === subRoutePath;
+															const SubIcon = resolveSidebarNavIcon(
+																section.heading,
+																subItem,
+																item.name,
+															);
 															return (
 																<li key={subIndex}>
 																	<Link
 																		href={subRoutePath}
-																		className={`w-full block text-left px-2.5 py-1 text-xs rounded-xl transition-colors ${
+																		className={`flex items-center gap-2 text-left px-2 py-2 text-[13px] leading-snug rounded-lg transition-colors ${
 																			isSubActive
 																				? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold"
 																				: "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
 																		}`}
 																	>
-																		{subItem}
+																		<SubIcon
+																			className="h-3.5 w-3.5 shrink-0 opacity-80 text-zinc-500 dark:text-zinc-400"
+																			strokeWidth={2}
+																			aria-hidden
+																		/>
+																		<span className="truncate">
+																			{subItem}
+																		</span>
 																	</Link>
 																</li>
 															);
@@ -384,13 +460,20 @@ const Sidebar = () => {
 										) : (
 											<Link
 												href={routePath}
-												className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-xl transition-colors ${
+												className={`w-full flex items-center justify-between gap-2 p-2 text-xs leading-snug rounded-xl transition-colors ${
 													isActive
 														? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-semibold"
 														: "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
 												}`}
 											>
-												<span>{item.name}</span>
+												<ItemIcon
+													className="h-3.5 w-3.5 shrink-0 opacity-80 text-zinc-500 dark:text-zinc-400"
+													strokeWidth={2}
+													aria-hidden
+												/>
+												<span className="truncate flex-1 min-w-0 text-left">
+													{item.name}
+												</span>
 												<div className="flex items-center gap-0.5">
 													{item.badge && (
 														<span className="text-[10px] px-1 py-0.5 bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-400 rounded">
@@ -411,15 +494,14 @@ const Sidebar = () => {
 				))}
 			</div>
 
-			{/* Bottom Section */}
-			<div className="border-t border-zinc-200 dark:border-zinc-800 p-3 space-y-1.5">
+			<div className="border-t border-zinc-200 p-2 dark:border-zinc-800 space-y-1">
 				{bottomLinks.map((link, index) => {
 					const Icon = link.icon;
 					return (
 						<a
 							key={index}
 							href="#"
-							className="flex items-center justify-between px-2.5 py-1.5 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors group"
+							className="group flex items-center justify-between rounded-xl p-2 text-xs leading-snug text-zinc-700 transition-colors hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
 						>
 							<div className="flex items-center gap-1.5">
 								<Icon className="w-3.5 h-3.5" />
@@ -437,16 +519,17 @@ const Sidebar = () => {
 
 	return (
 		<>
-			{/* Desktop: Fixed Sidebar */}
-			<div className="hidden lg:block fixed left-0 top-0 w-64 h-screen z-50">
+			<div
+				className={`hidden lg:block fixed left-0 top-0 w-64 h-screen z-50 transition-transform duration-200 ease-out ${
+					desktopExpanded ? "translate-x-0" : "-translate-x-full pointer-events-none"
+				}`}
+			>
 				{sidebarContent}
 			</div>
 
-			{/* Mobile: Drawer with Animation */}
 			<AnimatePresence>
 				{isOpen && (
 					<>
-						{/* Backdrop */}
 						<motion.div
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
@@ -454,7 +537,6 @@ const Sidebar = () => {
 							onClick={closeSidebar}
 							className="fixed inset-0 bg-black/50 dark:bg-black/70 z-[55] lg:hidden"
 						/>
-						{/* Drawer */}
 						<motion.div
 							initial={{ x: -256 }}
 							animate={{ x: 0 }}
@@ -467,86 +549,6 @@ const Sidebar = () => {
 					</>
 				)}
 			</AnimatePresence>
-
-			{isSearchModalOpen && (
-				<div
-					className="fixed inset-0 bg-black/50 dark:bg-black/70 z-[60] flex items-start justify-center pt-20"
-					onClick={() => setIsSearchModalOpen(false)}
-				>
-					<div
-						className="bg-white dark:bg-zinc-950 rounded-xl shadow-xl w-full max-w-2xl mx-4 border border-zinc-200 dark:border-zinc-800"
-						onClick={(e) => e.stopPropagation()}
-					>
-						{/* Modal Header */}
-						<div className="flex items-center justify-between p-4 border-b border-zinc-200 dark:border-zinc-800">
-							<div className="flex items-center gap-2">
-								<Search className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
-								<h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-									Search
-								</h3>
-							</div>
-							<button
-								onClick={() => setIsSearchModalOpen(false)}
-								className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
-							>
-								<X className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
-							</button>
-						</div>
-
-						{/* Search Input */}
-						<div className="p-4 border-b border-zinc-200 dark:border-zinc-800">
-							<div className="relative">
-								<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400 dark:text-zinc-500" />
-								<input
-									type="text"
-									placeholder="Search documentation..."
-									className="w-full pl-10 pr-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:border-transparent text-sm"
-									autoFocus
-								/>
-							</div>
-						</div>
-
-						{/* Navigation Links */}
-						<div className="p-4">
-							<h4 className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-3">
-								Quick Navigation
-							</h4>
-							<div className="space-y-1">
-								{navbarTabs.map((tab) => {
-									const Icon = tab.icon;
-									let isActive = false;
-
-									// Handle Docs route (should be active for "/" or "/docs/*")
-									if (tab.path === "/") {
-										isActive = pathname === "/" || pathname.startsWith("/docs");
-									} else {
-										// For other routes, check if pathname starts with the tab path
-										isActive =
-											pathname === tab.path ||
-											pathname.startsWith(tab.path + "/");
-									}
-
-									return (
-										<Link
-											key={tab.id}
-											href={tab.path}
-											onClick={() => setIsSearchModalOpen(false)}
-											className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-colors ${
-												isActive
-													? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
-													: "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-											}`}
-										>
-											<Icon className="w-4 h-4" />
-											<span className="text-sm">{tab.label}</span>
-										</Link>
-									);
-								})}
-							</div>
-						</div>
-					</div>
-				</div>
-			)}
 		</>
 	);
 };
