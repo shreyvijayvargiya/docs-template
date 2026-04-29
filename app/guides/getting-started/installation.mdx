@@ -50,11 +50,25 @@ npm install @your-sdk/vue
 
 ## Verification
 
-Verify the installation:
+<Steps>
+	<Step title="Confirm the package is installed">
+		Run:
 
-```bash
-npm list @your-sdk/core
-```
+		```bash
+		npm list @your-sdk/core
+		```
+
+		You should see the installed version with no missing dependency errors.
+	</Step>
+	<Step title="Smoke test in Node">
+		In a small script or REPL, import the client and instantiate it with a placeholder key
+		to ensure the module resolves (no network call required).
+	</Step>
+	<Step title="Align versions across workspace">
+		If you use monorepos or multiple packages, pin the same SDK major version everywhere to
+		avoid duplicate or conflicting installs.
+	</Step>
+</Steps>
 
 ## Troubleshooting
 

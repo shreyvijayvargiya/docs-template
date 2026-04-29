@@ -1,0 +1,173 @@
+import {
+	saarasV3Tabs,
+	saarikaV25Tabs,
+	saarasTranslateTabs,
+	errorHandlingCode,
+} from "./speech-to-text-samples";
+
+# Speech-to-Text REST API
+
+Process short audio files synchronously with immediate response. Instant transcription and translation for quick audio processing with multiple format support.
+
+### Synchronous Processing
+
+Process short audio files with immediate response. Best for quick transcriptions and testing with a maximum duration of 30 seconds.
+
+## Saaras v3: State-of-the-Art Speech Recognition (Recommended)
+
+Saaras v3 is our latest state-of-the-art speech recognition model with flexible output formats. It supports multiple modes for different use cases: transcribe, translate, verbatim, transliterate, and codemix.
+
+<Note>
+	**Recommended for new integrations.** Saaras v3 offers improved accuracy and flexible output modes. Learn more in the [docs introduction](/docs/features/introduction).
+</Note>
+
+### Output Modes
+
+| Mode                   | Description                                     |
+| ---------------------- | ----------------------------------------------- |
+| `transcribe` (default) | Standard transcription in the original language |
+| `translate`            | Translates speech to English                    |
+| `verbatim`             | Exact word-for-word transcription               |
+| `translit`             | Romanization to Latin script                    |
+| `codemix`              | Code-mixed text output                          |
+
+### Code Examples for Saaras v3
+
+<CodeTabs tabs={saarasV3Tabs} />
+
+<Note>
+	Explore response fields and errors in [API response format](#api-response-format) below.
+</Note>
+
+## Legacy Models (Deprecated Soon)
+
+<Warning>
+	The following models will be deprecated soon. We recommend migrating to **Saaras v3** for new integrations.
+</Warning>
+
+### Saarika v2.5: Speech to Text Transcription
+
+Saarika is a speech-to-text transcription model that excels at multi-speaker content, mixed language content, and conference recordings.
+
+<Note>
+	**Deprecation Notice:** Saarika v2.5 will be deprecated soon. Use **Saaras v3** with `mode="transcribe"` instead.
+</Note>
+
+<CodeTabs tabs={saarikaV25Tabs} />
+
+### Saaras v2.5: Speech to Text Translation
+
+Saaras v2.5 is available on the Speech-to-Text Translate endpoint for translating speech directly to English.
+
+<Note>
+	**Deprecation Notice:** Saaras v2.5 will be deprecated soon. Use **Saaras v3** with `mode="translate"` instead.
+</Note>
+
+<CodeTabs tabs={saarasTranslateTabs} />
+
+## API Response Format
+
+### Speech to Text Transcription Response
+
+| Field           | Type   | Description                                                                                       |
+| --------------- | ------ | ------------------------------------------------------------------------------------------------- |
+| `request_id`    | string | Unique identifier for the request                                                                 |
+| `transcript`    | string | The transcribed text from the audio file                                                          |
+| `language_code` | string | BCP-47 language code of detected language (e.g., `hi-IN`). Returns `null` if no language detected |
+
+```json
+{
+  "request_id": "20241115_12345678-1234-5678-1234-567812345678",
+  "transcript": "नमस्ते, आप कैसे हैं?",
+  "language_code": "hi-IN"
+}
+```
+
+### Speech to Text Translation Response
+
+| Field           | Type   | Description                                 |
+| --------------- | ------ | ------------------------------------------- |
+| `request_id`    | string | Unique identifier for the request           |
+| `transcript`    | string | Translated text in English                  |
+| `language_code` | string | BCP-47 code of the detected source language |
+
+**Supported source languages:** `hi-IN`, `bn-IN`, `kn-IN`, `ml-IN`, `mr-IN`, `od-IN`, `pa-IN`, `ta-IN`, `te-IN`, `gu-IN`, `en-IN`
+
+```json
+{
+  "request_id": "20241115_12345678-1234-5678-1234-567812345678",
+  "transcript": "Hello, how are you?",
+  "language_code": "hi-IN"
+}
+```
+
+## Error Responses
+
+All errors return a JSON object with an `error` field containing details about what went wrong.
+
+### Error Response Structure
+
+```json
+{
+  "error": {
+    "message": "Human-readable error description",
+    "code": "error_code_for_programmatic_handling",
+    "request_id": "unique_request_identifier"
+  }
+}
+```
+
+### Error Codes Reference
+
+| HTTP Status | Error Code                   | When This Happens                                | What To Do                                       |
+| ----------- | ---------------------------- | ------------------------------------------------ | ------------------------------------------------ |
+| `400`       | `invalid_request_error`      | Missing required parameters or malformed request | Check request format and required fields         |
+| `403`       | `invalid_api_key_error`      | API key is invalid, missing, or expired          | Verify your API key in the dashboard             |
+| `422`       | `unprocessable_entity_error` | Invalid audio format or file too large           | Use supported formats: WAV, MP3, AAC, FLAC, OGG  |
+| `429`       | `insufficient_quota_error`   | API quota or rate limit exceeded                 | Wait for reset or upgrade your plan              |
+| `500`       | `internal_server_error`      | Unexpected server error                          | Retry the request; contact support if persistent |
+| `503`       | `rate_limit_exceeded_error`  | Service temporarily overloaded                   | Retry with exponential backoff                   |
+
+### Example Error Response
+
+```json
+{
+  "error": {
+    "message": "Unsupported audio format. Supported formats: WAV, MP3, AAC, FLAC, OGG",
+    "code": "unprocessable_entity_error",
+    "request_id": "20241115_abc12345"
+  }
+}
+```
+
+<AccordionGroup>
+	<Accordion title="Error handling code example">
+		<CodeTabs
+			tabs={[
+				{
+					label: "Python",
+					language: "python",
+					code: errorHandlingCode,
+				},
+			]}
+		/>
+	</Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<Steps>
+	<Step title="Get API Key">
+		Sign up and get your API key from the [Sarvam AI dashboard](https://dashboard.sarvam.ai).
+	</Step>
+	<Step title="Test integration">
+		Call the API with short sample audio (under 30 seconds) using the [code examples](#code-examples-for-saaras-v3) above.
+	</Step>
+	<Step title="Go live">
+		Deploy your integration and monitor usage and errors from your dashboard.
+	</Step>
+</Steps>
+
+<Note>
+	Need help? Contact us on [Discord](https://discord.com/invite/5rAsykttcs) for guidance.
+</Note>

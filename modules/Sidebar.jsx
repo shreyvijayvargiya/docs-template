@@ -520,7 +520,7 @@ const Sidebar = () => {
 	return (
 		<>
 			<div
-				className={`hidden lg:block fixed left-0 top-0 w-64 h-screen z-50 transition-transform duration-200 ease-out ${
+				className={`hidden lg:block fixed left-0 top-0 w-64 h-screen z-30 transition-transform duration-200 ease-out ${
 					desktopExpanded ? "translate-x-0" : "-translate-x-full pointer-events-none"
 				}`}
 			>
@@ -535,14 +535,14 @@ const Sidebar = () => {
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
 							onClick={closeSidebar}
-							className="fixed inset-0 bg-black/50 dark:bg-black/70 z-[55] lg:hidden"
+							className="fixed inset-0 bg-black/50 dark:bg-black/70 z-[40] lg:hidden"
 						/>
 						<motion.div
 							initial={{ x: -256 }}
 							animate={{ x: 0 }}
 							exit={{ x: -256 }}
 							transition={{ type: "tween", duration: 0.2 }}
-							className="fixed left-0 top-0 h-screen z-[60] lg:hidden"
+							className="fixed left-0 top-0 h-screen z-[40] lg:hidden"
 						>
 							{sidebarContent}
 						</motion.div>

@@ -4,6 +4,9 @@ import MDXTable from "./components/MDXTable";
 import MDXMessage from "./components/MDXMessage";
 import MDXCard from "./components/MDXCard";
 import CodeTabs from "./components/CodeTabs";
+import MDXAccordion from "./components/MDXAccordion";
+import MDXAccordionGroup from "./components/MDXAccordionGroup";
+import { MDXSteps, MDXStep } from "./components/MDXSteps";
 
 const mdxComponents = {
 	h1: (props) => <MDXHeading level={1} {...props} />,
@@ -93,7 +96,10 @@ const mdxComponents = {
 	),
 	table: (props) => <MDXTable {...props} />,
 	thead: ({ children, ...props }) => (
-		<thead className="bg-zinc-100 dark:bg-zinc-800" {...props}>
+		<thead
+			className="border-b border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900"
+			{...props}
+		>
 			{children}
 		</thead>
 	),
@@ -104,7 +110,7 @@ const mdxComponents = {
 	),
 	tr: ({ children, ...props }) => (
 		<tr
-			className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+			className="transition-colors odd:bg-white even:bg-zinc-50/80 hover:bg-zinc-100/80 dark:odd:bg-zinc-950 dark:even:bg-zinc-900/50 dark:hover:bg-zinc-900/80"
 			{...props}
 		>
 			{children}
@@ -112,7 +118,7 @@ const mdxComponents = {
 	),
 	th: ({ children, ...props }) => (
 		<th
-			className="px-4 py-2 text-left text-xs font-semibold text-zinc-900 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-800"
+			className="border-r border-zinc-200 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-zinc-900 last:border-r-0 dark:border-zinc-800 dark:text-zinc-100"
 			{...props}
 		>
 			{children}
@@ -120,7 +126,7 @@ const mdxComponents = {
 	),
 	td: ({ children, ...props }) => (
 		<td
-			className="px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 border-b border-zinc-200 dark:border-zinc-800"
+			className="border-r border-zinc-200 px-4 py-3 align-top text-sm text-zinc-700 last:border-r-0 dark:border-zinc-800 dark:text-zinc-300"
 			{...props}
 		>
 			{children}
@@ -131,6 +137,20 @@ const mdxComponents = {
 			{children}
 		</MDXMessage>
 	),
+	Note: ({ children, ...props }) => (
+		<MDXMessage type="info" {...props}>
+			{children}
+		</MDXMessage>
+	),
+	Warning: ({ children, ...props }) => (
+		<MDXMessage type="warning" {...props}>
+			{children}
+		</MDXMessage>
+	),
+	Accordion: (props) => <MDXAccordion {...props} />,
+	AccordionGroup: (props) => <MDXAccordionGroup {...props} />,
+	Steps: (props) => <MDXSteps {...props} />,
+	Step: (props) => <MDXStep {...props} />,
 	Card: ({ icon, title, description, children, ...props }) => (
 		<MDXCard icon={icon} title={title} description={description} {...props}>
 			{children}

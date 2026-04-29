@@ -8,40 +8,41 @@ Migrating to Docs is a straightforward process that can be completed in a few si
 
 ## Step-by-Step Guide
 
-### Step 1: Prepare Your Data
+<Steps>
+	<Step title="Prepare your data">
+		Before starting the migration, export your current data, review configuration
+		settings, and back up anything critical.
+	</Step>
+	<Step title="Run the migration tool">
+		Use the automated migration tool to transfer your data:
 
-Before starting the migration:
+		```bash
+		Docs migrate --source your-platform
+		```
+	</Step>
+	<Step title="Verify migration">
+		After migration, confirm that records, configurations, and core flows behave as
+		expected in staging before you cut over production traffic.
+	</Step>
+</Steps>
 
-- Export your current data
-- Review your configuration settings
-- Backup important information
+## Common issues
 
-### Step 2: Run Migration Tool
-
-Use our automated migration tool to transfer your data:
-
-```bash
-Docs migrate --source your-platform
-```
-
-### Step 3: Verify Migration
-
-After migration, verify that all data has been transferred correctly:
-
-- Check all records
-- Validate configurations
-- Test functionality
-
-## Common Issues
-
-### Data Format Compatibility
-
-If you encounter format issues, ensure your source data matches the expected format.
-
-### Configuration Mapping
-
-Some configurations may need manual adjustment after migration.
+<AccordionGroup title="Migration troubleshooting">
+	<Accordion title="Data format compatibility">
+		If you see validation errors, compare your export against the expected schema in the
+		migration guide and normalize fields (dates, currency, IDs) before retrying.
+	</Accordion>
+	<Accordion title="Configuration mapping">
+		Some legacy settings do not map one-to-one. Note any manual overrides in your runbook
+		and re-apply them in the Docs dashboard after import.
+	</Accordion>
+	<Accordion title="Partial import or timeouts">
+		Retry with batching enabled, or run during off-peak hours. If failures persist, open a
+		ticket with the failed job ID from the migration log.
+	</Accordion>
+</AccordionGroup>
 
 ## Support
 
-If you need help during migration, contact our support team.
+If you need help during migration, contact our support team or visit [Support](/support/support).

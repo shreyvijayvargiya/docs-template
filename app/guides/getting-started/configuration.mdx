@@ -83,3 +83,24 @@ For TypeScript projects, enable strict type checking:
 3. **Enable logging** in development
 4. **Set appropriate timeouts** for your use case
 
+## Recommended production setup
+
+<Steps>
+	<Step title="Create environment-specific keys">
+		Issue separate API keys for staging and production. Rotate keys if someone leaves the
+		team or a key is exposed.
+	</Step>
+	<Step title="Load secrets from your host">
+		Use your platform’s secret manager or encrypted env variables—never hard-code keys in
+		the client bundle.
+	</Step>
+	<Step title="Tune timeouts and retries">
+		Set timeouts and retry budgets that match your upstream SLAs so transient errors
+		recover without overwhelming the API.
+	</Step>
+	<Step title="Verify before deploy">
+		Run integration tests against a sandbox project and confirm logging redacts sensitive
+		fields.
+	</Step>
+</Steps>
+
